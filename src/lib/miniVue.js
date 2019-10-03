@@ -1,6 +1,6 @@
 import { compileNode } from './compile';
 
-export default class MVue {
+export default class MiniVue {
   constructor(options) {
     const { el, data, methods } = options;
 

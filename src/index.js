@@ -1,6 +1,6 @@
-import MVue from './lib/mvue';
+import MiniVue from './lib/miniVue';
 
-const vm = new MVue({
+const vm = new MiniVue({
   el: "#root",
   data() {
     return {
