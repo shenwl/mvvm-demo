@@ -1,15 +1,15 @@
 import { compileNode } from './compile';
 
-export default class MiniVue {
+export default class MVue {
   constructor(options) {
     const { el, data, methods } = options;
 
     this.timer = 0;
 
-    this.$el = _getElement(el);
+    this.$el = this._getElement(el);
     this.$temp = this.$el.cloneNode(true);
 
-    this.$data = new Proxy(_getData(data), {
+    this.$data = new Proxy(this._getData(data), {
       set: (target, name, val) => {
         target[name] = val;
 
@@ -29,6 +29,21 @@ export default class MiniVue {
     return this.$data;
   }
 
+  _getElement(el) {
+    if (el instanceof HTMLBaseElement) {
+      return el;
+    }
+    let dom = document.querySelector(el);
+    return dom;
+  }
+
+  _getData(data) {
+    if (typeof data === "function") {
+      return data() || {};
+    }
+    return data || {};
+  }
+
   update() {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -46,17 +61,3 @@ export default class MiniVue {
   }
 }
 
-function _getElement(el) {
-  if (el instanceof HTMLBaseElement) {
-    return el;
-  }
-  let dom = document.querySelector(el);
-  return dom;
-}
-
-function _getData(data) {
-  if (typeof data === "function") {
-    return data() || {};
-  }
-  return data || {};
-}
